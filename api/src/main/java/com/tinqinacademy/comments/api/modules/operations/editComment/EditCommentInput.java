@@ -16,10 +16,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class EditCommentInput implements OperationInput {
     @Size(min = 1)
-    @NotNull
+    @NotNull(message = "content cannot be null")
     private String content;
 
-    @NotBlank
+    @NotBlank(message = "id cannot be empty/blank")
     private UUID id;
 }
 

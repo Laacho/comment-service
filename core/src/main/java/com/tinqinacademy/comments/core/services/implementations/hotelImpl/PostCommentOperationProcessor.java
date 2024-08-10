@@ -1,17 +1,18 @@
-package com.tinqinacademy.comments.core.services.implementations;
+package com.tinqinacademy.comments.core.services.implementations.hotelImpl;
 
 import com.tinqinacademy.comments.api.modules.exceptions.errorHandler.ErrorHandler;
 import com.tinqinacademy.comments.api.modules.exceptions.errorWrapper.ErrorWrapper;
 import com.tinqinacademy.comments.api.modules.operations.postComment.PostCommentInput;
 import com.tinqinacademy.comments.api.modules.operations.postComment.PostCommentOperation;
 import com.tinqinacademy.comments.api.modules.operations.postComment.PostCommentOutput;
+import com.tinqinacademy.comments.core.services.implementations.BaseOperationProcessor;
 import com.tinqinacademy.comments.persistence.entities.Comment;
 import com.tinqinacademy.comments.persistence.entities.User;
 import com.tinqinacademy.comments.persistence.repositories.CommentsRepository;
 import com.tinqinacademy.comments.persistence.repositories.UserRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +21,20 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
-public class PostCommentOperationProcessor implements PostCommentOperation {
+public class PostCommentOperationProcessor extends BaseOperationProcessor implements PostCommentOperation {
     private final CommentsRepository commentsRepository;
-    private final ErrorHandler errorHandler;
     private final UserRepository userRepository;
+
+    public PostCommentOperationProcessor(Validator validator, ErrorHandler errorHandler, CommentsRepository commentsRepository, UserRepository userRepository) {
+        super(validator, errorHandler);
+        this.commentsRepository = commentsRepository;
+        this.userRepository = userRepository;
+    }
+
     @Override
     public Either<ErrorWrapper, PostCommentOutput> process(PostCommentInput input) {
         log.info("Start posting comment input: {}",input);
-        return Try.of(()-> {
+        return validateInput(input).flatMap(validatedInput ->Try.of(()-> {
 
                     User user = getUser(input);
                     User savedUser = userRepository.save(user);
@@ -40,7 +46,7 @@ public class PostCommentOperationProcessor implements PostCommentOperation {
                 }
         )
                 .toEither()
-                .mapLeft(errorHandler::handleError);
+                .mapLeft(errorHandler::handleError));
     }
 
     private  User getUser(PostCommentInput input) {

@@ -17,13 +17,13 @@ public class PostCommentInput implements OperationInput {
     @Hidden
     private String roomId;
     @Size(min = 1,max = 10)
-    @NotNull
+    @NotNull(message = "first name cannot be null")
     private String firstName;
     @Size(min = 1,max = 10)
-    @NotNull
+    @NotNull(message = "last name cannot be null")
     private String lastName;
     @Size(min = 1,max = 1000)
-    @NotNull
+    @NotNull(message = "content cannot be null")
     private String content;
 
 }

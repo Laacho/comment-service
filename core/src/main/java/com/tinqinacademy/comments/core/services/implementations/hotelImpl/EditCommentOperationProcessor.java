@@ -1,10 +1,7 @@
-package com.tinqinacademy.comments.core.services.implementations;
+package com.tinqinacademy.comments.core.services.implementations.hotelImpl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import com.tinqinacademy.comments.api.modules.exceptions.customException.InvalidCommentIdException;
 import com.tinqinacademy.comments.api.modules.exceptions.errorHandler.ErrorHandler;
@@ -12,31 +9,33 @@ import com.tinqinacademy.comments.api.modules.exceptions.errorWrapper.ErrorWrapp
 import com.tinqinacademy.comments.api.modules.operations.editComment.EditCommentInput;
 import com.tinqinacademy.comments.api.modules.operations.editComment.EditCommentOperation;
 import com.tinqinacademy.comments.api.modules.operations.editComment.EditCommentOutput;
+import com.tinqinacademy.comments.core.services.implementations.BaseOperationProcessor;
 import com.tinqinacademy.comments.persistence.entities.Comment;
 import com.tinqinacademy.comments.persistence.repositories.CommentsRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
-public class EditCommentOperationProcessor implements EditCommentOperation {
-    private final ErrorHandler errorHandler;
+public class EditCommentOperationProcessor extends BaseOperationProcessor implements EditCommentOperation { ;
     private final ObjectMapper objectMapper;
     private final CommentsRepository commentsRepository;
-    // private final ConversionService conversionService;
+
+    public EditCommentOperationProcessor(Validator validator, ErrorHandler errorHandler, ObjectMapper objectMapper, CommentsRepository commentsRepository) {
+        super(validator, errorHandler);
+        this.objectMapper = objectMapper;
+        this.commentsRepository = commentsRepository;
+    }
 
     @Override
     public Either<ErrorWrapper, EditCommentOutput> process(EditCommentInput input) {
         log.info("Start posting comment input: {}", input);
-        return Try.of(() -> {
+        return validateInput(input).flatMap(validatedInput ->Try.of(() -> {
                     Comment commentById = commentsRepository.findById(input.getId()).orElseThrow(
                             () -> new InvalidCommentIdException("comment not found"));
                     JsonNode roomNode = objectMapper.valueToTree(commentById);
@@ -53,7 +52,7 @@ public class EditCommentOperationProcessor implements EditCommentOperation {
                     return output;
                 })
                 .toEither()
-                .mapLeft(errorHandler::handleError);
+                .mapLeft(errorHandler::handleError));
     }
 
     private EditCommentOutput outputBuilder(Comment save) {

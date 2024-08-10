@@ -16,15 +16,15 @@ public class AdminEditCommentInput implements OperationInput {
     @Hidden
     private String commentId;
     @Size(min = 1,max = 10)
-    @NotNull
+    @NotNull(message = "room number cannot be null")
     private String roomNumber;
     @Size(min = 1,max = 15)
-    @NotNull
+    @NotNull(message = "first name cannot be null")
     private String firstName;
     @Size(min = 1,max = 15)
-    @NotNull
+    @NotNull(message = "last name cannot be null")
     private String lastName;
     @Size(min = 1,max = 255)
-    @NotNull
+    @NotNull(message = "content cannot be empty")
     private String content;
 }

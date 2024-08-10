@@ -13,6 +13,6 @@ import lombok.*;
 @AllArgsConstructor
 public class GetAllCommentsInput implements OperationInput {
 
-    @NotBlank
+    @NotBlank(message = "room id cannot be empty/blank")
     private String roomId;
 }
