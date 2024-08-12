@@ -8,9 +8,16 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>persistence</artifactId>
+    <artifactId>restexport</artifactId>
     <version>${revision}</version>
-    <name>persistence</name>
-    <description>Persistence Module</description>
+    <name>restexport</name>
+    <description>Rest Export Module</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.tinqinacademy.comments</groupId>
+            <artifactId>core</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
 </project>

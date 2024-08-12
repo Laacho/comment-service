@@ -9,7 +9,7 @@ import com.tinqinacademy.comments.api.modules.operations.getAllComments.GetAllCo
 import com.tinqinacademy.comments.api.modules.operations.getAllComments.GetAllCommentsOutput;
 import com.tinqinacademy.comments.api.modules.operations.postComment.PostCommentInput;
 import com.tinqinacademy.comments.api.modules.operations.postComment.PostCommentOperation;
-import com.tinqinacademy.comments.rest.paths.URLPaths;
+import com.tinqinacademy.comments.core.services.paths.URLPaths;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

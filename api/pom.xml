@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.tinqinacademy</groupId>
+        <groupId>com.tinqinacademy.comments</groupId>
         <artifactId>Comments</artifactId>
         <version>${revision}</version>
     </parent>
@@ -16,7 +16,6 @@
     <dependencies>
         <dependency>
             <groupId>jakarta.validation</groupId>
-            <!--   qka karta             -->
             <artifactId>jakarta.validation-api</artifactId>
             <version>${jakarta.version}</version>
         </dependency>

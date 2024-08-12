@@ -1,4 +1,4 @@
-package com.tinqinacademy.comments.rest.paths;
+package com.tinqinacademy.comments.core.services.paths;
 
 public class URLPaths {
     public static final String ROOM_COMMENT="/hotel/{roomID}/comment";
