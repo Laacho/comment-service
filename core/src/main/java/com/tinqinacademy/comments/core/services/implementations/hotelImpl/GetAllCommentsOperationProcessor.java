@@ -38,7 +38,7 @@ public class GetAllCommentsOperationProcessor extends BaseOperationProcessor imp
     public Either<ErrorWrapper, GetAllCommentsOutput> process(GetAllCommentsInput input) {
         log.info("Start posting comment input: {}", input);
         return validateInput(input).flatMap(validatedInput ->Try.of(() -> {
-                    List<Comment> allByRoomId = commentsRepository.findAllByRoomId(UUID.fromString(input.getRoomId()));
+                    List<Comment> allByRoomId = findCommentsByRoomId(input);
                     List<DataOutput> result = getDataOutputs(allByRoomId);
                     GetAllCommentsOutput output = buildOutput(result);
                     log.info("End getAllComments  output: {}", output);
@@ -47,6 +47,10 @@ public class GetAllCommentsOperationProcessor extends BaseOperationProcessor imp
                 })
                 .toEither()
                 .mapLeft(errorHandler::handleError));
+    }
+
+    private List<Comment> findCommentsByRoomId(GetAllCommentsInput input) {
+        return commentsRepository.findAllByRoomId(UUID.fromString(input.getRoomId()));
     }
 
     private List<DataOutput> getDataOutputs(List<Comment> allByRoomId) {

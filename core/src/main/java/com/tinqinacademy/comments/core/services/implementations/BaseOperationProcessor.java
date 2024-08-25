@@ -16,7 +16,6 @@ public class BaseOperationProcessor {
     private final Validator validator;
     protected final ErrorHandler errorHandler;
 
-
     public BaseOperationProcessor(Validator validator, ErrorHandler errorHandler) {
         this.validator = validator;
         this.errorHandler = errorHandler;

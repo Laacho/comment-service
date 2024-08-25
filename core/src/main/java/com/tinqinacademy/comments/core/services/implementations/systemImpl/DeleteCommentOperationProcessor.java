@@ -30,16 +30,19 @@ public class DeleteCommentOperationProcessor extends BaseOperationProcessor impl
     public Either<ErrorWrapper, DeleteCommentOutput> process(DeleteCommentInput input) {
         log.info("Start posting comment input: {}", input);
         return validateInput(input).flatMap(validatedInput ->Try.of(() -> {
-                    if (!commentsRepository.existsById(UUID.fromString(input.getCommentId())))
-                        throw new InvalidCommentIdException("Invalid comment id");
+                    checkIfCommentDoesntExists(input);
                     commentsRepository.deleteById(UUID.fromString(input.getCommentId()));
                     DeleteCommentOutput output = outputBuilder();
                     log.info("End deleting comment output: {}", output);
                     return output;
-
                 })
                 .toEither()
                 .mapLeft(errorHandler::handleError));
+    }
+
+    private void checkIfCommentDoesntExists(DeleteCommentInput input) {
+        if (!commentsRepository.existsById(UUID.fromString(input.getCommentId())))
+            throw new InvalidCommentIdException("Invalid comment id");
     }
 
     private DeleteCommentOutput outputBuilder() {

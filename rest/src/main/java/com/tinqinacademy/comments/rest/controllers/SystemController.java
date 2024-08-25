@@ -7,7 +7,7 @@ import com.tinqinacademy.comments.api.modules.operations.adminEditComment.AdminE
 import com.tinqinacademy.comments.api.modules.operations.deleteComment.DeleteCommentInput;
 import com.tinqinacademy.comments.api.modules.operations.deleteComment.DeleteCommentOperation;
 import com.tinqinacademy.comments.api.modules.operations.deleteComment.DeleteCommentOutput;
-import com.tinqinacademy.comments.core.services.paths.URLPaths;
+import com.tinqinacademy.comments.core.services.paths.CommentsURLPaths;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -25,7 +25,7 @@ public class SystemController extends BaseController {
         this.deleteCommentOperation = deleteCommentOperation;
     }
 
-    @PutMapping(URLPaths.SYSTEM_COMMENT)
+    @PutMapping(CommentsURLPaths.PUT_SYSTEM_COMMENT)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "404", description = "Comment not found")})
@@ -42,15 +42,15 @@ public class SystemController extends BaseController {
         return handleResponse(result);
     }
 
-    @DeleteMapping(URLPaths.SYSTEM_COMMENT)
+    @DeleteMapping(CommentsURLPaths.DELETE_SYSTEM_COMMENT)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "404", description = "Comment not found")})
     @Operation(summary = "Deletes a comment")
-    public ResponseEntity<?> deleteComment(@PathVariable String commendId){
+    public ResponseEntity<?> deleteComment(@PathVariable String commentId){
 
         DeleteCommentInput input = DeleteCommentInput.builder()
-                .commentId(commendId)
+                .commentId(commentId)
                 .build();
         Either<ErrorWrapper, DeleteCommentOutput> process = deleteCommentOperation.process(input);
         return  handleResponse(process);

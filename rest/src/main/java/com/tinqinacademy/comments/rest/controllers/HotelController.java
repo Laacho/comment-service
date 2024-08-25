@@ -9,7 +9,7 @@ import com.tinqinacademy.comments.api.modules.operations.getAllComments.GetAllCo
 import com.tinqinacademy.comments.api.modules.operations.getAllComments.GetAllCommentsOutput;
 import com.tinqinacademy.comments.api.modules.operations.postComment.PostCommentInput;
 import com.tinqinacademy.comments.api.modules.operations.postComment.PostCommentOperation;
-import com.tinqinacademy.comments.core.services.paths.URLPaths;
+import com.tinqinacademy.comments.core.services.paths.CommentsURLPaths;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,7 +33,7 @@ public class HotelController extends BaseController {
     }
 
 
-    @GetMapping(URLPaths.ROOM_COMMENT)
+    @GetMapping(CommentsURLPaths.GET_ROOM_COMMENT)
     @ApiResponses(value = {
         @ApiResponse(responseCode = "400", description = "Bad Request"),
         @ApiResponse(responseCode = "404", description = "Comment not found")})
@@ -46,11 +46,11 @@ public class HotelController extends BaseController {
        return handleResponse(result);
     }
 
-    @PostMapping(URLPaths.ROOM_COMMENT)
+    @PostMapping(CommentsURLPaths.POST_ROOM_COMMENT)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "404", description = "Comment not found")})
-    @Operation(summary = "post comment ")
+    @Operation(summary = "post comment")
     public ResponseEntity<?> postComments(@PathVariable String roomID,
        @RequestBody PostCommentInput input) {
         PostCommentInput result = PostCommentInput.builder()
@@ -61,7 +61,7 @@ public class HotelController extends BaseController {
                 .build();
        return handleResponse(postCommentOperation.process(result));
     }
-    @PatchMapping(value = URLPaths.HOTEL_COMMENT, consumes = "application/json-patch+json")
+    @PatchMapping(value = CommentsURLPaths.PATCH_HOTEL_COMMENT, consumes = "application/json-patch+json")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "404", description = "Comment not found")})
