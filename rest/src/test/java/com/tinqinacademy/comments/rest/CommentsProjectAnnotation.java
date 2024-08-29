@@ -1,6 +1,6 @@
 package com.tinqinacademy.comments.rest;
 
-import com.tinqinacademy.comments.core.services.paths.URLPaths;
+import com.tinqinacademy.comments.core.services.paths.CommentsURLPaths;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class CommentsProjectAnnotation {
     public void givenRoomId_whenGetComments_thenReturnCommentsList() throws Exception {
         String roomId = "1";
 
-        mockMvc.perform(get(URLPaths.ROOM_COMMENT, roomId)
+        mockMvc.perform(get(CommentsURLPaths.ROOM_COMMENT, roomId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect( jsonPath("$").exists())
